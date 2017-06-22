@@ -33,8 +33,101 @@
     </nav>
 
     <article class="article">
-      <h1>Object Creation Functions, Inheritance, Properties, Methods, Instantiation</h1>
-      <p>Coming soon..</p>
+      <h1>Object Creation</h1>
+      <p id="p1"></p>
+      <script>
+        var user = {
+          firstName: "Francisco",
+          lastName: "Bernal",
+          email: "demo@gmail.com",
+          mobile: "+1 987 6543 210"
+        };
+
+        var str = "Type of object created: " + user.constructor.name + "<br>";
+
+        document.getElementById("p1").innerHTML = str;
+
+      </script>
+
+      <h1>Properties</h1>
+      <p id="p2"></p>
+      <script>
+        str = "Objects have properties. For the one we created these are the properties: "
+        str += Object.keys(user) + "<br>";
+        str += "These are the values: " + Object.values(user);
+
+        document.getElementById("p2").innerHTML = str;
+
+      </script>
+
+      <h1>Functions</h1>
+      <p id="p3"></p>
+      <script>
+        function fullname(firstName, lastName) {
+          return firstName + " " + lastName
+        }
+
+        str = "We created a function to compute fullname: " + fullname(user.firstName, user.lastName);
+
+        document.getElementById("p3").innerHTML = str;
+
+      </script>
+
+      <h1>Instantiation</h1>
+      <p id="p4"></p>
+      <script>
+        function User(firstName, lastName, email, mobile) {
+          this.firstName = firstName;
+          this.lastName = lastName;
+          this.email = email;
+          this.mobile = mobile;
+        }
+
+        var user2 = new User("Ignacio", "Yescas", "demo1@gmail.com", "+1 987 6543 211");
+        str = "We can use functions and 'new' keyword to instantiate objects.<br>";
+        str += "Type of object created: " + user2.constructor.name + "<br>";
+        str += "Properties: " + Object.keys(user2) + "<br>";
+        str += "Values: " + Object.values(user2);
+
+        document.getElementById("p4").innerHTML = str;
+
+      </script>
+
+      <h1>Inheritance</h1>
+      <p id="p5"></p>
+      <script>
+        function Admin(firstName, lastName, email, mobile) {
+          User.call(this, firstName, lastName, email, mobile);
+          this.reports = [];
+        }
+
+        var admin = new Admin("Juan", "Yescas", "demo2@gmail.com", "+1 987 6543 212");
+        str = "We create a new kind of object: 'Admin'. 'Admin' is inheriting from 'User'.<br>";
+        str += "Type of object created: " + admin.constructor.name + "<br>";
+        str += "Properties: " + Object.keys(admin) + "<br>";
+        str += "Values: " + Object.values(admin) + "<br>";
+        str += "Instance of User: " + (admin instanceof User) + "<br>";
+        str += "Instance of Admin: " + (admin instanceof Admin) + "<br>";
+
+        document.getElementById("p5").innerHTML = str;
+
+      </script>
+
+      <h1>Methods</h1>
+      <p id="p6"></p>
+      <script>
+        User.prototype.fullName = function() {
+          return this.firstName + " " + this.lastName;
+        };
+
+        str = "We create a  for 'User' for their fullname.<br>";
+        str += "Fullname: " + user2.fullName() + "<br>";
+
+        document.getElementById("p6").innerHTML = str;
+
+      </script>
+
+      <hr>
       <h2><a href="https://github.com/fbernaly/cit261-byui-fby/tree/master/week01">Source code</a></h2>
     </article>
 

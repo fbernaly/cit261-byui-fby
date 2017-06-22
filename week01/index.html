@@ -101,6 +101,9 @@
           this.reports = [];
         }
 
+        Admin.prototype = Object.create(User.prototype);
+        Admin.prototype.constructor = Admin;
+
         var admin = new Admin("Juan", "Yescas", "demo2@gmail.com", "+1 987 6543 212");
         str = "We create a new kind of object: 'Admin'. 'Admin' is inheriting from 'User'.<br>";
         str += "Type of object created: " + admin.constructor.name + "<br>";
@@ -119,9 +122,11 @@
         User.prototype.fullName = function() {
           return this.firstName + " " + this.lastName;
         };
-
-        str = "We create a  for 'User' for their fullname.<br>";
+        
+        str = "We create a method for 'User' for their fullname.<br>";
         str += "Fullname: " + user2.fullName() + "<br>";
+        str += "Since 'Admin' is a subclass of 'User':<br>";
+        str += "Fullname: " + admin.fullName() + "<br>";
 
         document.getElementById("p6").innerHTML = str;
 

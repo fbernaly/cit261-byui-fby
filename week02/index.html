@@ -46,6 +46,7 @@
         var str = "Type of object created: " + user.constructor.name + "<br>";
 
         document.getElementById("p1").innerHTML = str;
+
       </script>
 
       <h1>Properties</h1>
@@ -56,6 +57,7 @@
         str += "These are the values: " + Object.values(user);
 
         document.getElementById("p2").innerHTML = str;
+
       </script>
 
       <h1>Functions</h1>
@@ -68,6 +70,7 @@
         str = "We created a function to compute fullname: " + fullname(user.firstName, user.lastName);
 
         document.getElementById("p3").innerHTML = str;
+
       </script>
 
       <h1>Instantiation</h1>
@@ -87,6 +90,7 @@
         str += "Values: " + Object.values(user2);
 
         document.getElementById("p4").innerHTML = str;
+
       </script>
 
       <h1>Inheritance</h1>
@@ -109,6 +113,7 @@
         str += "Instance of Admin: " + (admin instanceof Admin) + "<br>";
 
         document.getElementById("p5").innerHTML = str;
+
       </script>
 
       <h1>Methods</h1>
@@ -123,12 +128,22 @@
         str += "Since 'Admin' is a subclass of 'User':<br>";
         str += "Fullname: " + admin.fullName() + "<br>";
 
+        // overriding method from superclass
+        Admin.prototype.fullName = function() {
+          return this.lastName + ", " + this.firstName;
+        };
+
+        str += "After overriding the method:<br>"
+        str += "Fullname: " + admin.fullName() + "<br>";
+
         document.getElementById("p6").innerHTML = str;
+
       </script>
 
       <hr>
+      <h2>Sandbox</h2>
       <p>Create an user</p>
-      <form >
+      <form>
         First name:<br>
         <input type="text" id="firstName" value="Mickey">
         <br> Last name:<br>
@@ -153,6 +168,7 @@
           str += JSON.stringify(user);
           document.getElementById("p7").innerHTML = str;
         }
+
       </script>
 
       <hr>

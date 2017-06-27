@@ -53,7 +53,6 @@ a:hover {
 
 pre {
   white-space: pre-wrap;
-  width:60ex
 }
 
 .article {
@@ -125,7 +124,6 @@ p {
 
 table {
   border-collapse: collapse;
-  width: 100%;
 }
 
 td,

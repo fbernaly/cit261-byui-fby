@@ -126,6 +126,10 @@
           };
           var textnode = document.createTextNode(id);
           a.appendChild(textnode);
+          var br = document.createElement("br");
+          a.appendChild(br);
+          textnode = document.createTextNode("(View Details)");
+          a.appendChild(textnode);
           td.appendChild(a);
           tr.appendChild(td);
         }

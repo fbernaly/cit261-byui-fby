@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Week 02</title>
   <meta charset="UTF-8">
@@ -32,9 +33,178 @@
     </nav>
 
     <article class="article">
-      <h1>Loops, Conditional Statements, Functions, Variables, Parameters, Arrays, Associative Arrays</h1>
+      <h1>Loops, Conditional Statements, Functions, Variables, Parameters</h1>
 
-      <p>To demonstrate fluency in this topic I shared what I learned with my teammates in our first group meeting. These are the topics we studied: (click on each topic)</p>
+      <form id="loops">
+        Times:<br>
+        <input type="text" id="times" value="5">
+        <br> Method:
+        <br>
+        <input type="radio" name="method" value="for" checked> for<br>
+        <input type="radio" name="method" value="do-while"> do...while<br>
+        <input type="radio" name="method" value="while"> while<br>
+        <button type="button" onclick="createList()">Run</button>
+      </form>
+
+      <ul id="l1">
+      </ul>
+
+      <script>
+        function getRadioValue() {
+          var val;
+          var radios = document.getElementsByName('method');
+          for (var i = 0, len = radios.length; i < len; i++) {
+            if (radios[i].checked) {
+              val = radios[i].value;
+              break;
+            }
+          }
+          return val;
+        }
+
+        function createListNode(i, id) {
+          var ul = document.getElementById(id);
+          var node = document.createElement("LI");
+          var textnode = document.createTextNode(i.toString());
+          node.appendChild(textnode);
+          ul.appendChild(node);
+        }
+
+        function forloop(times) {
+          for (var i = 0; i < times; i++) {
+            createListNode(i, "l1");
+          }
+        }
+
+        function dowhileloop(times) {
+          if (times <= 0) {
+            return;
+          }
+
+          var i = 0;
+          do {
+            createListNode(i++, "l1");
+          } while (i < times);
+        }
+
+        function whileloop(times) {
+          var i = 0;
+          while (i < times) {
+            createListNode(i++, "l1");
+          }
+        }
+
+        function createList() {
+          var times = document.getElementById("times").value;
+          var method = getRadioValue();
+          var ul = document.getElementById("l1");
+          ul.innerHTML = "";
+
+          switch (method) {
+            case "for":
+              forloop(times);
+              break;
+
+            case "do-while":
+              dowhileloop(times);
+              break;
+
+            case "while":
+              whileloop(times);
+              break;
+
+            default:
+              console.log('default');
+          }
+        }
+
+      </script>
+
+      <h1>Function overloading (Default values)</h1>
+
+      <p>Some strategies for function overloading are default values.</p>
+
+      <script>
+        // default values
+        function multiply(a, b = 1, c = 1) {
+          return a * b * c;
+        }
+
+        console.log(multiply(5, 5, 5));
+        console.log(multiply(5, 5));
+        console.log(multiply(5));
+
+      </script>
+
+      <h1>Arrays</h1>
+
+      <form>
+        Enter comma separated array:<br>
+        <input type="text" id="arr" value="1,2,3,foo">
+        <br>
+        <button type="button" onclick="traverseArray()">Run</button>
+      </form>
+
+      <p>for...in</p>
+      <ul id="l2">
+      </ul>
+      <p>for...of</p>
+      <ul id="l3">
+      </ul>
+
+      <script>
+        function traverseArray() {
+          var ul = document.getElementById("l2");
+          ul.innerHTML = "";
+          ul = document.getElementById("l3");
+          ul.innerHTML = "";
+          let arr = document.getElementById('arr').value.split(',');
+          for (let i in arr) {
+            createListNode(i, "l2"); // index
+          }
+          for (let i of arr) {
+            createListNode(i, "l3"); // value
+          }
+        }
+
+      </script>
+
+      <h1>Associative Arrays</h1>
+
+      <form>
+        Enter key:<br>
+        <input type="text" id="key" value="key">
+        <br> Enter value:<br>
+        <input type="text" id="value" value="value">
+        <br>
+        <button type="button" onclick="addKeyValuePair()">Add</button>
+        <button type="button" onclick="removeKeyValuePair()">Remove</button>
+      </form>
+
+      <p id='p1'></p>
+
+      <script>
+        var obj = {};
+
+        function addKeyValuePair() {
+          var key = document.getElementById('key').value;
+          var value = document.getElementById('value').value;
+          obj[key] = value;
+          document.getElementById('p1').innerHTML = JSON.stringify(obj);
+        }
+
+        function removeKeyValuePair() {
+          var key = document.getElementById('key').value;
+          delete obj[key];
+          document.getElementById('p1').innerHTML = JSON.stringify(obj);
+        }
+
+      </script>
+
+      <hr>
+      <h1>Group meeting</h1>
+
+      <p>To demonstrate fluency in these topic I shared what I learned with my teammates in our first group meeting. These are the topics we studied: (click on each topic)</p>
 
       <ul>
         <li><a href="https://youtu.be/EwsQArFMTIw?t=3m">What is Javascript</a></li>
@@ -48,6 +218,7 @@
           <a href="https://youtu.be/EwsQArFMTIw?t=46m15s" Instantiation</a></li>
       </ul>
 
+      <hr>
       <h2><a href="https://github.com/fbernaly/cit261-byui-fby/blob/master/week01/index.html">Source code</a></h2>
     </article>
 
@@ -55,4 +226,5 @@
 
   </div>
 </body>
+
 </html>

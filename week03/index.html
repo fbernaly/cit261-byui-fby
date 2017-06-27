@@ -69,7 +69,7 @@
               document.getElementById("json_res02").style.visibility = "hidden";
             }
           };
-          xhttp.open("GET", "http://www.omdbapi.com/?apikey=byuidaho&s=" + title, true);
+          xhttp.open("GET", "https://www.omdbapi.com/?apikey=byuidaho&s=" + title, true);
           xhttp.send();
         }
 
@@ -139,7 +139,7 @@
           tr.appendChild(td);
 
           var xhttp = new XMLHttpRequest();
-          xhttp.open('GET', "http://img.omdbapi.com/?apikey=byuidaho&i=" + id, true);
+          xhttp.open('GET', "https://img.omdbapi.com/?apikey=byuidaho&i=" + id, true);
           xhttp.responseType = 'blob';
           xhttp.onload = function(e) {
             if (this.status == 200) {
@@ -162,7 +162,7 @@
               displayDetails(json);
             }
           };
-          xhttp.open("GET", "http://www.omdbapi.com/?apikey=byuidaho&i=" + id, true);
+          xhttp.open("GET", "https://www.omdbapi.com/?apikey=byuidaho&i=" + id, true);
           xhttp.send();
         }
 

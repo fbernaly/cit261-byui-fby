@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Week 04</title>
   <meta charset="UTF-8">
@@ -33,12 +34,165 @@
 
     <article class="article">
       <h1>Local Storage API, Storing and Retrieving Simple Data, Arrays, Associative Arrays, and Objects</h1>
-      <p>Coming soon..</p>
-      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/tree/master/week04">Source code</a></h2>
+
+      <h2>Storing Simple Data</h2>
+      <form>
+        Enter your name:<br>
+        <input type="text" id="name" value="Francisco">
+        <br>
+        <button type="button" onclick="saveName()">Save</button>
+      </form>
+
+      <h2>Storing Arrays</h2>
+      <form>
+        Enter comma separated array:<br>
+        <input type="text" id="arr" value="1,3,5,foo">
+        <br>
+        <button type="button" onclick="saveArray()">Save</button>
+      </form>
+
+      <h2>Storing Associative Arrays</h2>
+      <form>
+        Enter comma separated key-value pairs:<br>
+        <input type="text" id="a_arr" value='{"firstName":"John", "lastName":"Doe", "age":46}'>
+        <br>
+        <button type="button" onclick="saveAssociativeArray()">Save</button>
+      </form>
+
+      <h2>Storing Objects</h2>
+      <form>
+        First name:<br>
+        <input type="text" id="firstName" value="Mickey">
+        <br> Last name:<br>
+        <input type="text" id="lastName" value="Mouse">
+        <br> E-mail:<br>
+        <input type="text" id="email" value="mouse@disney.com">
+        <br> Mobile:<br>
+        <input type="text" id="mobile" value="+1 310 123 45678">
+        <br><br>
+        <button type="button" onclick="saveObject()">Save</button>
+      </form>
+
+      <h2>Remove item from Local Storage</h2>
+      <form>
+        Enter key:<br>
+        <input type="text" id="lkey" value="key">
+        <br>
+        <button type="button" onclick="removeLocalStorageItem()">Remove</button>
+      </form>
+
+      <h2>Remove item from Session Storage</h2>
+      <form>
+        Enter key:<br>
+        <input type="text" id="skey" value="key">
+        <br>
+        <button type="button" onclick="removeSessionStorageItem()">Remove</button>
+      </form>
+
+      <h2>Retrieving Local Storage</h2>
+      <button type="button" onclick="retrieveLocalStorage()">Retrieve</button>
+      <pre id="pre01">
+      </pre>
+
+      <pre id="pre01a">
+      </pre>
+
+      <pre id="pre01b">
+      </pre>
+
+      <h2>Retrieving Session Storage</h2>
+      <button type="button" onclick="retrieveSessionStorage()">Retrieve</button>
+      <pre id="pre02">
+      </pre>
+
+      <pre id="pre02a">
+      </pre>
+
+      <pre id="pre02b">
+      </pre>
+
+      <script>
+        function save(key, value) {
+          localStorage.setItem(key, value);
+          sessionStorage.setItem(key, value);
+        }
+
+        function saveName() {
+          var key = "name";
+          var value = document.getElementById("name").value;
+          save(key, value);
+        }
+
+        function saveArray() {
+          var key = "arr";
+          let value = document.getElementById('arr').value.split(',');
+          save(key, value);
+        }
+
+        function saveAssociativeArray() {
+          var key = "a_arr";
+          let value = JSON.stringify(JSON.parse(document.getElementById('a_arr').value));
+          save(key, value);
+        }
+
+        function saveObject() {
+          firstName = document.getElementById("firstName").value;
+          lastName = document.getElementById("lastName").value;
+          email = document.getElementById("email").value;
+          mobile = document.getElementById("mobile").value;
+          var user = new User(firstName, lastName, email, mobile);
+          var key = "obj";
+          save(key, JSON.stringify(user));
+        }
+
+        function removeLocalStorageItem() {
+          var key = document.getElementById("lkey").value;
+          localStorage.removeItem(key);
+        }
+
+        function removeSessionStorageItem() {
+          var key = document.getElementById("skey").value;
+          sessionStorage.removeItem(key);
+        }
+
+        function retrieveLocalStorage() {
+          // get all
+          document.getElementById("pre01").innerHTML = JSON.stringify(localStorage, null, 2);
+
+          // get assosiative array
+          document.getElementById("pre01a").innerHTML = JSON.stringify(localStorage.getItem("a_arr"), null, 2);
+
+          // get object
+          document.getElementById("pre01a").innerHTML = JSON.stringify(localStorage.getItem("obj"), null, 2);
+        }
+
+        function retrieveSessionStorage() {
+          // get all
+          document.getElementById("pre02").innerHTML = JSON.stringify(sessionStorage, null, 2);
+
+          // get assosiative array
+          document.getElementById("pre02a").innerHTML = JSON.stringify(sessionStorage.getItem("a_arr"), null, 2);
+
+          // get object
+          document.getElementById("pre02a").innerHTML = JSON.stringify(sessionStorage.getItem("obj"), null, 2);
+        }
+
+        function User(firstName, lastName, email, mobile) {
+          this.firstName = firstName;
+          this.lastName = lastName;
+          this.email = email;
+          this.mobile = mobile;
+        }
+
+      </script>
+
+      <hr>
+      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/blob/master/week04/index.html">Source code</a></h2>
     </article>
 
     <footer class="footer">Copyright &copy; fbernaly</footer>
 
   </div>
 </body>
+
 </html>

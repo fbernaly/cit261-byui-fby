@@ -118,7 +118,6 @@
     function getFilms() {
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = function() {
-        console.log("kkk");
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
           if (xmlhttp.status == 200) {
             hideLoader();

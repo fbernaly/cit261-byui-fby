@@ -125,14 +125,16 @@
       xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {
           if (xmlhttp.status == 200) {
-            hideLoader();
             var json = JSON.parse(xmlhttp.responseText);
             setTimeout(function() {
               displayTable(json);
             }, 900);
           } else {
             alert('There was a problem with the request.');
+            var p = document.getElementById("perror");
+            p.style.visibility = "visible";
           }
+          hideLoader();
         }
       };
       xmlhttp.open('GET', 'https://tranquil-savannah-65857.herokuapp.com/api/films');
@@ -237,8 +239,6 @@
 
       <center>
 
-        <p>If you get an error message related to the 'request' when loading this page, install this <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi">extension</a> in Chrome to allow requests to any site with ajax from any source.</p>
-
         <p>After the table is loaded, search for a film number. Try films that does not exist in the database to see another animation.</p>
 
         <input type="text" class="expandable" id="film_number" name="number" onkeyup="lookup()" placeholder="Search by film number...">
@@ -248,6 +248,8 @@
         <input type="radio" name="method" onchange="lookup()" id="containing"> Containing<br>
         <br>
         <br>
+        
+        <p id="perror" style="visibility: hidden">If you get an error message related to the 'request' when loading this page, install this <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi">extension</a> in Chrome to allow requests to any site with ajax from any source. Then reload the page.</p>
 
         <div id="loader" class="loader"></div>
 

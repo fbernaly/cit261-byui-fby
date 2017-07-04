@@ -1,14 +1,207 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Week 09</title>
   <meta charset="UTF-8">
   <meta name="description" content="CIT 261 Topics">
   <meta name="author" content="Francisco Bernal">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ddd;
+      font-size: 18px;
+      opacity: 0;
+      transition: opacity 1s linear;
+    }
+    
+    table th,
+    table td {
+      text-align: left;
+      padding: 12px;
+    }
+    
+    table tr {
+      border-bottom: 1px solid #ddd;
+    }
+    
+    table tr.tr_header,
+    table tr.tr_header:hover {
+      background-color: #777;
+      color: white;
+    }
+    
+    table tr:hover {
+      background-color: #f1f1f1;
+      color: black;
+    }
+    
+    input[type=text].expandable {
+      width: 250px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: white;
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      padding: 12px 20px 12px 40px;
+      transition: width 0.4s ease-in-out;
+    }
+    
+    input[type=text].expandable:focus {
+      width: 80%;
+    }
+    
+    .loader {
+      border: 5px solid #eee;
+      border-radius: 50%;
+      border-top: 5px solid #777;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      opacity: 1;
+      transition: opacity 1s linear;
+    }
+    
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    #toast {
+      margin: auto 100px;
+      background-color: #eee;
+      color: black;
+      border-radius: 5px;
+      padding: 5px;
+      box-shadow: 0 0 10px #777;
+      transition: 0.5s ease-in-out;
+      opacity: 0;
+    }
+  </style>
+
+  <script>
+    function lookup() {
+      var filter, table, tr, matching, containing;
+      filter = document.getElementById("film_number").value.toUpperCase();
+      table = document.getElementById("films_table");
+      tr = table.getElementsByTagName("tr");
+      matching = document.getElementById("matching").checked;
+      containing = document.getElementById("containing").checked;
+
+      var hide = true
+
+      for (var i = 0; i < tr.length; i++) {
+        var td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (filter == "" || (matching == true && td.innerHTML.toUpperCase() == filter) || (containing == true && td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+            tr[i].style.display = "";
+            hide = false
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+
+      table.style.opacity = hide ? 0 : 1;
+      hide ? showNotFound() : hideNotFound();
+    }
+
+    function getFilms() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        console.log("kkk");
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+          if (xmlhttp.status == 200) {
+            hideLoader();
+            var json = JSON.parse(xmlhttp.responseText);
+            setTimeout(function() {
+              displayTable(json);
+            }, 900);
+          } else {
+            alert('There was a problem with the request.');
+          }
+        }
+      };
+      xmlhttp.open('GET', 'https://tranquil-savannah-65857.herokuapp.com/api/films');
+      xmlhttp.send();
+    }
+
+    function hideLoader() {
+      var loader = document.getElementById("loader");
+      loader.style.opacity = 0;
+      setTimeout(function() {
+        loader.parentNode.removeChild(loader);
+      }, 1000);
+    }
+
+    function displayTable(json) {
+      var success = json["success"];
+      var table = document.getElementById("films_table");
+      if (success == true) {
+        var films = json['data'];
+        if (films.length > 0) {
+          table.style.visibility = "visible";
+          table.style.opacity = 1;
+        } else {
+          table.style.visibility = "hidden";
+          table.style.opacity = 0;
+        }
+        for (film of films) {
+          addRow(film);
+        }
+      } else {
+        table.style.visibility = "hidden";
+      }
+    }
+
+    function addRow(film) {
+      var table = document.getElementById("films_table");
+      var tr = document.createElement("TR");
+      addColumn(tr, film['film_number']);
+      addColumn(tr, film['location']);
+      addColumn(tr, film['created_at']);
+      table.appendChild(tr);
+    }
+
+    function addColumn(tr, text) {
+      var td = document.createElement("TD");
+      var textnode = document.createTextNode(text);
+      td.appendChild(textnode);
+      tr.appendChild(td);
+    }
+
+    function showNotFound() {
+      var toast = document.getElementById("toast")
+      var film_number = document.getElementById("film_number").value.toUpperCase();
+      p = document.getElementById("ptoast");
+      p.innerHTML = "'" + film_number + "' not found :("
+      toast.style.transform = "translate(0px, -140px)";
+      toast.style.opacity = 1;
+      setTimeout(function() {
+        hideNotFound();
+      }, 1500);
+    }
+
+    function hideNotFound() {
+      var toast = document.getElementById("toast")
+      toast.style.transform = "translate(0px, 140px)";
+      toast.style.opacity = 0;
+    }
+  </script>
+
 </head>
 
-<body>
+<body onload="getFilms()">
+
   <div class="container">
     <header class="header">
       <h1>CIT 261</h1>
@@ -34,12 +227,45 @@
     <article class="article">
       <h1>Creating CSS3 Transitions and Animations in CSS and triggering them with JavaScript</h1>
       <h1>Designing, Defining, and Triggering CSS3 Transitions without Custom Libraries (Thought Library)</h1>
-      <p>Coming soon..</p>
-      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/tree/master/week09">Source code</a></h2>
+      <h1>Designing, Defining, and Triggering CSS3 Transforms without Custom Libraries (Thought Library)</h1>
+      <h1>Designing, Defining, and Triggering CSS3 Animations without Custom Libraries (Thought Library)</h1>
+
+      <center>
+
+        <p></p>
+
+        <input type="text" class="expandable" id="film_number" name="number" onkeyup="lookup()" placeholder="Search by film number...">
+        <br>
+
+        <input type="radio" name="method" onchange="lookup()" id="matching" checked> Matching<br>
+        <input type="radio" name="method" onchange="lookup()" id="containing"> Containing<br>
+        <br>
+        <br>
+
+        <div id="loader" class="loader"></div>
+
+        <table id="films_table" style="visibility: hidden">
+          <tr class="tr_header">
+            <th>Film</th>
+            <th>Location</th>
+            <th>Created at</th>
+          </tr>
+        </table>
+
+      </center>
+
+      <hr>
+      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/blob/master/week09/index.html">Source code</a></h2>
+
+      <center id="toast">
+        <p id="ptoast">Not Found</p>
+      </center>
+
     </article>
 
     <footer class="footer">Copyright &copy; fbernaly</footer>
 
   </div>
 </body>
+
 </html>

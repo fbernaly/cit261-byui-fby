@@ -39,6 +39,10 @@
       color: black;
     }
     
+    tr:nth-child(even) {
+      background-color: white;
+    }
+    
     input[type=text].expandable {
       width: 250px;
       box-sizing: border-box;
@@ -86,6 +90,7 @@
       transition: 0.5s ease-in-out;
       opacity: 0;
     }
+
   </style>
 
   <script>
@@ -195,6 +200,7 @@
       toast.style.transform = "translate(0px, 140px)";
       toast.style.opacity = 0;
     }
+
   </script>
 
 </head>
@@ -231,7 +237,9 @@
 
       <center>
 
-        <p></p>
+        <p>If you get an error message related to the 'request' when loading this page, install this <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi">extension</a> in Chrome to allow requests to any site with ajax from any source.</p>
+
+        <p>After the table is loaded, search for a film number. Try films that does not exist in the database to see another animation.</p>
 
         <input type="text" class="expandable" id="film_number" name="number" onkeyup="lookup()" placeholder="Search by film number...">
         <br>

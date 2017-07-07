@@ -137,7 +137,7 @@
           hideLoader();
         }
       };
-      xmlhttp.open('GET', 'https://tranquil-savannah-65857.herokuapp.com/api/films');
+      xmlhttp.open('GET', 'films.php');
       xmlhttp.send();
     }
 
@@ -150,22 +150,17 @@
     }
 
     function displayTable(json) {
-      var success = json["success"];
       var table = document.getElementById("films_table");
-      if (success == true) {
-        var films = json['data'];
-        if (films.length > 0) {
-          table.style.visibility = "visible";
-          table.style.opacity = 1;
-        } else {
-          table.style.visibility = "hidden";
-          table.style.opacity = 0;
-        }
-        for (film of films) {
-          addRow(film);
-        }
+      var films = json;
+      if (films.length > 0) {
+        table.style.visibility = "visible";
+        table.style.opacity = 1;
       } else {
         table.style.visibility = "hidden";
+        table.style.opacity = 0;
+      }
+      for (film of films) {
+        addRow(film);
       }
     }
 
@@ -248,7 +243,7 @@
         <input type="radio" name="method" onchange="lookup()" id="containing"> Containing<br>
         <br>
         <br>
-        
+
         <p id="perror" style="visibility: hidden">If you get an error message related to the 'request' when loading this page, install this <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi">extension</a> in Chrome to allow requests to any site with ajax from any source. Then reload the page.</p>
 
         <div id="loader" class="loader"></div>

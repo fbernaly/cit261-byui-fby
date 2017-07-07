@@ -1,14 +1,120 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Week 08</title>
   <meta charset="UTF-8">
   <meta name="description" content="CIT 261 Topics">
   <meta name="author" content="Francisco Bernal">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+  <style type="text/css">
+    #canvas {
+      border: solid black 1px;
+      margin: auto;
+    }
+    
+    video {
+      margin: auto;
+    }
+
+  </style>
+
+  <script>
+    var touch, mouse;
+    var color = "#000000";
+    var lineWidth = 2;
+
+    function setupCanvas() {
+      var canvas = document.getElementById("canvas");
+      canvas.addEventListener("touchstart", touchDidStart, false);
+      canvas.addEventListener("touchend", touchDidEnd, false);
+      canvas.addEventListener("touchcancel", touchDidCancel, false);
+      canvas.addEventListener("touchleave", touchDidEnd, false);
+      canvas.addEventListener("touchmove", touchDidMove, false);
+      canvas.addEventListener("mousedown", mouseDidDown, false);
+      canvas.addEventListener("mouseup", mouseDidUp, false);
+      canvas.addEventListener("mouseout", mouseDidUp, false);
+      canvas.addEventListener("mousemove", mouseDidMove, false);
+    }
+
+    function mouseDidDown(e) {
+      mouse = e;
+      var x = mouse.clientX;
+      var y = mouse.clientY;
+      drawPoint(x, y);
+    }
+
+    function mouseDidUp(e) {
+      mouse = null;
+    }
+
+    function mouseDidMove(e) {
+      if (mouse == null)
+        return;
+      var x0 = mouse.clientX;
+      var y0 = mouse.clientY;
+      var x1 = e.clientX;
+      var y1 = e.clientY;
+      drawLine(x0, y0, x1, y1);
+      mouse = e;
+    }
+
+    function touchDidStart(e) {
+      e.preventDefault();
+      var touches = e.changedTouches;
+      drawPoint(touches[0].pageX, touches[0].pageY);
+      touch = touches[0];
+    }
+
+    function touchDidMove(e) {
+      e.preventDefault();
+      var touches = e.changedTouches;
+      drawLine(touch.pageX, touch.pageY, touches[0].pageX, touches[0].pageY);
+      touch = touches[0];
+    }
+
+    function touchDidEnd(e) {
+      e.preventDefault();
+      var touches = e.changedTouches;
+      drawLine(touch.pageX, touch.pageY, touches[0].pageX, touches[0].pageY);
+      touch = touches[0];
+    }
+
+    function touchDidCancel(e) {
+      e.preventDefault();
+      var touches = evt.changedTouches;
+    }
+
+    function drawPoint(x, y) {
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      var rect = canvas.getBoundingClientRect();
+      context.fillStyle = color;
+      context.fillRect(x - rect.left, y - rect.top, lineWidth, lineWidth);
+    }
+
+    function drawLine(x0, y0, x1, y1) {
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      var rect = canvas.getBoundingClientRect();
+      context.lineWidth = lineWidth;
+      context.fillStyle = color;
+      context.beginPath();
+      context.moveTo(x0 - rect.left, y0 - rect.top);
+      context.lineTo(x1 - rect.left, y1 - rect.top);
+      context.closePath();
+      context.stroke();
+    }
+
+    function setup() {
+      setupCanvas();
+    }
+
+  </script>
 </head>
 
-<body>
+<body onload="setup()">
   <div class="container">
     <header class="header">
       <h1>CIT 261</h1>
@@ -32,13 +138,36 @@
     </nav>
 
     <article class="article">
-      <h1>HTML5 Tags - Video, Audio, and Canvas</h1>
-      <p>Coming soon..</p>
-      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/tree/master/week08">Source code</a></h2>
+      <h1>Canvas</h1>
+      <p>Try drawing with your finger on a mobile device.</p>
+      <center>
+        <canvas id="canvas" width="300" height="300">
+  </canvas>
+      </center>
+
+      <h1>Video</h1>
+      <center>
+        <video id=v width="320" height="240" controls>
+  <source src="video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+      </center>
+
+      <h1>Audio</h1>
+      <center>
+        <audio controls>
+  <source src="video.mp4" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+      </center>
+
+      <hr>
+      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/blob/master/week08/index.html">Source code</a></h2>
     </article>
 
     <footer class="footer">Copyright &copy; fbernaly</footer>
 
   </div>
 </body>
+
 </html>

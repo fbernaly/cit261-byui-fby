@@ -51,7 +51,7 @@
   </style>
 
   <script>
-    var touch;
+    var touch, mouse;
     var color = "#000000";
     var lineWidth = 2;
 
@@ -62,26 +62,52 @@
       canvas.addEventListener("touchcancel", touchDidCancel, false);
       canvas.addEventListener("touchleave", touchDidEnd, false);
       canvas.addEventListener("touchmove", touchDidMove, false);
+      canvas.addEventListener("mousedown", mouseDidDown, false);
+      canvas.addEventListener("mouseup", mouseDidUp, false);
+      canvas.addEventListener("mouseout", mouseDidUp, false);
+      canvas.addEventListener("mousemove", mouseDidMove, false);
+    }
+
+    function mouseDidDown(e) {
+      mouse = e;
+      var x = mouse.clientX;
+      var y = mouse.clientY;
+      drawPoint(x,y);
+    }
+
+    function mouseDidUp(e) {
+      mouse = null;
+    }
+
+    function mouseDidMove(e) {
+      if (mouse == null)
+        return;
+      var x0 = mouse.clientX;
+      var y0 = mouse.clientY;
+      var x1 = e.clientX;
+      var y1 = e.clientY;
+      drawLine(x0, y0, x1, y1);
+      mouse = e;
     }
 
     function touchDidStart(e) {
       e.preventDefault();
       var touches = e.changedTouches;
-      drawPoint(touches[0]);
+      drawPoint(touches[0].pageX, touches[0].pageY);
       touch = touches[0];
     }
 
     function touchDidMove(e) {
       e.preventDefault();
       var touches = e.changedTouches;
-      drawLine(touch, touches[0]);
+      drawLine(touch.pageX, touch.pageY, touches[0].pageX, touches[0].pageY);
       touch = touches[0];
     }
 
     function touchDidEnd(e) {
       e.preventDefault();
       var touches = e.changedTouches;
-      drawLine(touch, touches[0]);
+      drawLine(touch.pageX, touch.pageY, touches[0].pageX, touches[0].pageY);
       touch = touches[0];
     }
 
@@ -90,23 +116,23 @@
       var touches = evt.changedTouches;
     }
 
-    function drawPoint(point) {
+    function drawPoint(x, y) {
       var canvas = document.getElementById("canvas");
       var context = canvas.getContext("2d");
       var rect = canvas.getBoundingClientRect();
       context.fillStyle = color;
-      context.fillRect(point.pageX - rect.left, point.pageY - rect.top, lineWidth, lineWidth);
+      context.fillRect(x - rect.left, y - rect.top, lineWidth, lineWidth);
     }
 
-    function drawLine(from, to) {
+    function drawLine(x0, y0, x1, y1) {
       var canvas = document.getElementById("canvas");
       var context = canvas.getContext("2d");
       var rect = canvas.getBoundingClientRect();
       context.lineWidth = lineWidth;
       context.fillStyle = color;
       context.beginPath();
-      context.moveTo(from.pageX - rect.left, from.pageY - rect.top);
-      context.lineTo(to.pageX - rect.left, to.pageY - rect.top);
+      context.moveTo(x0 - rect.left, y0 - rect.top);
+      context.lineTo(x1 - rect.left, y1 - rect.top);
       context.closePath();
       context.stroke();
     }
@@ -189,8 +215,8 @@
       <h1>Standard JavaScript Events Including those for Mobile Devices ( Ex. onTouchBegin, onLoad, etc.) and Animation and Transition Events</h1>
 
       <br>
-      <h2>touchstart, touchend, touchcance, touchleave, touchmove</h2>
-      <p>Draw with your finger on a mobile device</p>
+      <h2>touchstart, touchend, touchcance, touchleave, touchmove, mousedown, mouseup, mouseout, mousemove</h2>
+      <p>Try drawing with your finger on a mobile device.</p>
       <canvas id="canvas" width="750" height="600">
   </canvas>
 

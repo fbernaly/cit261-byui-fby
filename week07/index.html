@@ -1,15 +1,169 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Week 07</title>
   <meta charset="UTF-8">
   <meta name="description" content="CIT 261 Topics">
   <meta name="author" content="Francisco Bernal">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+  <style type="text/css">
+    #canvas {
+      border: solid black 1px;
+      margin: auto;
+    }
+    
+    #loader {
+      border: 5px solid #eee;
+      border-radius: 50%;
+      border-top: 5px solid #777;
+      width: 20px;
+      height: 20px;
+    }
+    
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    input[type=text]#expandable {
+      width: 250px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: white;
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      padding: 12px 20px 12px 40px;
+      transition: width 0.4s ease-in-out;
+    }
+    
+    input[type=text]#expandable:focus {
+      width: 80%;
+    }
+
+  </style>
+
+  <script>
+    var touch;
+    var color = "#000000";
+    var lineWidth = 2;
+
+    function setupCanvas() {
+      var canvas = document.getElementById("canvas");
+      canvas.addEventListener("touchstart", touchDidStart, false);
+      canvas.addEventListener("touchend", touchDidEnd, false);
+      canvas.addEventListener("touchcancel", touchDidCancel, false);
+      canvas.addEventListener("touchleave", touchDidEnd, false);
+      canvas.addEventListener("touchmove", touchDidMove, false);
+    }
+
+    function touchDidStart(e) {
+      e.preventDefault();
+      var touches = e.changedTouches;
+      drawPoint(touches[0]);
+      touch = touches[0];
+    }
+
+    function touchDidMove(e) {
+      e.preventDefault();
+      var touches = e.changedTouches;
+      drawLine(touch, touches[0]);
+      touch = touches[0];
+    }
+
+    function touchDidEnd(e) {
+      e.preventDefault();
+      var touches = e.changedTouches;
+      drawLine(touch, touches[0]);
+      touch = touches[0];
+    }
+
+    function touchDidCancel(e) {
+      e.preventDefault();
+      var touches = evt.changedTouches;
+    }
+
+    function drawPoint(point) {
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      var rect = canvas.getBoundingClientRect();
+      context.fillStyle = color;
+      context.fillRect(point.pageX - rect.left, point.pageY - rect.top, lineWidth, lineWidth);
+    }
+
+    function drawLine(from, to) {
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      var rect = canvas.getBoundingClientRect();
+      context.lineWidth = lineWidth;
+      context.fillStyle = color;
+      context.beginPath();
+      context.moveTo(from.pageX - rect.left, from.pageY - rect.top);
+      context.lineTo(to.pageX - rect.left, to.pageY - rect.top);
+      context.closePath();
+      context.stroke();
+    }
+
+    function setupLoader() {
+      var loader = document.getElementById("loader");
+      loader.addEventListener("animationstart", animationDidStart, false);
+      loader.addEventListener("animationiteration", animationDidIterate, false);
+      loader.addEventListener("animationend", animationDidEnd, false);
+    }
+
+    function startAnimation() {
+      var loader = document.getElementById("loader");
+      loader.style.animation = "spin 1s linear 3";
+    }
+
+    function animationDidStart() {
+      var p = document.getElementById("p01");
+      p.innerHTML = "Event: animationstart " + Date();
+    }
+
+    function animationDidIterate() {
+      var p = document.getElementById("p01");
+      p.innerHTML = "Event: animationiteration " + Date();
+    }
+
+    function animationDidEnd() {
+      var p = document.getElementById("p01");
+      p.innerHTML = "Event: animationend " + Date();
+
+      var loader = document.getElementById("loader");
+      loader.style.animation = "";
+    }
+
+    function setupExpandable() {
+      var expandable = document.getElementById("expandable");
+      expandable.addEventListener("transitionend", transitionDidEnd, false);
+    }
+
+    function transitionDidEnd() {
+      var p = document.getElementById("p02");
+      p.innerHTML = "Event: transitionend " + Date();
+    }
+
+    function setup() {
+      setupCanvas();
+      setupLoader();
+      setupExpandable();
+    }
+
+  </script>
 </head>
 
-<body>
+<body onload="setup();">
+
   <div class="container">
+
     <header class="header">
       <h1>CIT 261</h1>
       <h2>Week 07</h2>
@@ -33,12 +187,34 @@
 
     <article class="article">
       <h1>Standard JavaScript Events Including those for Mobile Devices ( Ex. onTouchBegin, onLoad, etc.) and Animation and Transition Events</h1>
-      <p>Coming soon..</p>
-      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/tree/master/week07">Source code</a></h2>
+
+      <br>
+      <h2>touchstart, touchend, touchcance, touchleave, touchmove</h2>
+      <p>Draw with your finger on a mobile device</p>
+      <canvas id="canvas" width="750" height="600">
+  </canvas>
+
+      <br>
+      <br>
+      <h2>animationstart, animationiteration, animationend</h2>
+      <p id="p01"></p>
+      <div id="loader"></div>
+      <br>
+      <button type="button" onclick="startAnimation()">Animate 3 times</button>
+
+      <br>
+      <br>
+      <h2>transitionend</h2>
+      <input type="text" id="expandable" placeholder="Tap here to fire transition...">
+      <p id="p02"></p>
+
+      <hr>
+      <h2><a href="https://github.com/fbernaly/cit261-byui-fby/blob/master/week07/index.html">Source code</a></h2>
     </article>
 
     <footer class="footer">Copyright &copy; fbernaly</footer>
 
   </div>
 </body>
+
 </html>
